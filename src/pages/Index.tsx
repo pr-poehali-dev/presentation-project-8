@@ -7,269 +7,328 @@ const PEOPLE_IMG = "https://cdn.poehali.dev/projects/a0898aa0-e78d-44c2-9bfc-bf4
 const NATURE_IMG = "https://cdn.poehali.dev/projects/a0898aa0-e78d-44c2-9bfc-bf479da31037/files/b74f4805-5f44-45ef-8d6f-6a738504d5ba.jpg";
 
 const slides = [
-  { id: 0, label: "Титул" },
-  { id: 1, label: "География" },
-  { id: 2, label: "Население" },
-  { id: 3, label: "Природа" },
-  { id: 4, label: "История" },
-  { id: 5, label: "Районы" },
-  { id: 6, label: "Факты" },
+  { id: 0, label: "Титульный лист" },
+  { id: 1, label: "О России" },
+  { id: 2, label: "География" },
+  { id: 3, label: "Население" },
+  { id: 4, label: "Климат и природа" },
+  { id: 5, label: "История" },
+  { id: 6, label: "Административное деление" },
+  { id: 7, label: "Итоговые факты" },
 ];
 
-const SLIDE_COLORS = [
-  "from-blue-600 to-indigo-700",
-  "from-emerald-500 to-teal-600",
-  "from-orange-500 to-amber-600",
-  "from-green-500 to-lime-600",
-  "from-purple-600 to-violet-700",
-  "from-sky-500 to-cyan-600",
-  "from-rose-500 to-pink-600",
+/* ── цвета в классическом академическом духе ─────────────────── */
+const SLIDE_BG = [
+  { bg: "#1a2744", accent: "#c8a96e" },
+  { bg: "#1e3a2f", accent: "#a8c97f" },
+  { bg: "#2c1a44", accent: "#c8a0d8" },
+  { bg: "#3a2010", accent: "#d4a870" },
+  { bg: "#1a3030", accent: "#7ececa" },
+  { bg: "#3a1a20", accent: "#e08888" },
+  { bg: "#1a2a3a", accent: "#80b0d8" },
+  { bg: "#2a2010", accent: "#d4c070" },
 ];
 
-function Slide0() {
+const ornament = "❦";
+
+/* ── Общий заголовок слайда ──────────────────────────────────── */
+function SlideTitle({ text, accent }: { text: string; accent: string }) {
   return (
-    <div className="slide-inner flex flex-col items-center justify-center h-full text-center px-8 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white"
-            style={{
-              width: `${60 + i * 20}px`,
-              height: `${60 + i * 20}px`,
-              top: `${Math.sin(i * 1.2) * 40 + 50}%`,
-              left: `${Math.cos(i * 0.8) * 40 + 50}%`,
-              opacity: 0.3,
-            }}
-          />
-        ))}
-      </div>
-      <div className="relative z-10">
-        <div className="text-8xl mb-4 animate-bounce">🏔️</div>
-        <div className="bg-white/20 backdrop-blur-sm rounded-3xl px-8 py-3 mb-6 inline-block">
-          <span className="text-white/90 text-xl font-bold tracking-widest uppercase">5 класс • География</span>
+    <div className="text-center mb-5">
+      <div className="text-2xl mb-1" style={{ color: accent }}>{ornament}</div>
+      <h2 className="text-2xl md:text-3xl font-bold tracking-wide" style={{ color: "#f5f0e8", fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+        {text}
+      </h2>
+      <div className="mx-auto mt-2 h-px w-32" style={{ background: accent }} />
+    </div>
+  );
+}
+
+/* ── Текстовый блок с заголовком ────────────────────────────── */
+function TextBlock({ title, children, accent }: { title?: string; children: React.ReactNode; accent: string }) {
+  return (
+    <div className="rounded-lg p-4 mb-3" style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${accent}33` }}>
+      {title && <div className="text-sm font-bold uppercase tracking-widest mb-2" style={{ color: accent }}>{title}</div>}
+      <div className="text-sm md:text-base leading-relaxed" style={{ color: "#e8e0d0" }}>{children}</div>
+    </div>
+  );
+}
+
+/* ── Строка факта ───────────────────────────────────────────── */
+function FactRow({ label, value, accent }: { label: string; value: string; accent: string }) {
+  return (
+    <div className="flex justify-between items-baseline py-2" style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+      <span className="text-sm" style={{ color: "#b0a898" }}>{label}</span>
+      <span className="text-sm font-bold ml-4 text-right" style={{ color: "#f5f0e8" }}>{value}</span>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════
+   СЛАЙД 0 — ТИТУЛЬНЫЙ
+════════════════════════════════════════════════════ */
+function Slide0({ accent }: { accent: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-center px-8 relative">
+      <div className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{ backgroundImage: "repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,255,255,.3) 40px,rgba(255,255,255,.3) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,.3) 40px,rgba(255,255,255,.3) 41px)" }} />
+      <div className="relative z-10 max-w-2xl">
+        <div className="text-lg font-semibold tracking-widest uppercase mb-6" style={{ color: accent, fontFamily: "Georgia, serif" }}>
+          Муниципальное общеобразовательное учреждение
         </div>
-        <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-4 drop-shadow-lg">
-          Саратовская<br />область
+        <div className="h-px w-40 mx-auto mb-6" style={{ background: accent }} />
+        <div className="text-base mb-2" style={{ color: "#b0a898" }}>История · 5 класс</div>
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4" style={{ color: "#f5f0e8", fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+          64-й регион<br />Российской Федерации
         </h1>
-        <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-6">
-          64-й регион России 🇷🇺
+        <div className="text-xl md:text-2xl font-semibold mb-6" style={{ color: accent }}>
+          Саратовская область
         </div>
-        <p className="text-white/80 text-xl max-w-lg mx-auto leading-relaxed">
-          Территория, население и<br />природно-климатические особенности
+        <div className="h-px w-40 mx-auto mb-6" style={{ background: accent }} />
+        <p className="text-base leading-relaxed mb-8" style={{ color: "#c8c0b0" }}>
+          Территория, население и природно-климатические<br />особенности Саратовской области
         </p>
-        <div className="mt-8 flex items-center justify-center gap-2 text-white/60 text-lg">
-          <Icon name="ChevronRight" size={20} />
-          <span>Листайте вправо, чтобы начать</span>
+        <div className="inline-block rounded-lg px-6 py-3 text-sm" style={{ background: `${accent}22`, border: `1px solid ${accent}66`, color: accent }}>
+          🇷🇺 Россия · Поволжье · 2026 год
+        </div>
+        <div className="mt-8 flex items-center justify-center gap-2 text-sm" style={{ color: "#5a5248" }}>
+          <Icon name="ChevronRight" size={16} />
+          <span>Используйте стрелки для перехода между слайдами</span>
         </div>
       </div>
     </div>
   );
 }
 
-function Slide1() {
-  const neighbors = [
-    { name: "Пензенская", dir: "↖", color: "bg-blue-100 text-blue-800" },
-    { name: "Ульяновская", dir: "↑", color: "bg-purple-100 text-purple-800" },
-    { name: "Самарская", dir: "↗", color: "bg-orange-100 text-orange-800" },
-    { name: "Воронежская", dir: "←", color: "bg-green-100 text-green-800" },
-    { name: "Казахстан", dir: "→", color: "bg-yellow-100 text-yellow-800" },
-    { name: "Волгоградская", dir: "↓", color: "bg-red-100 text-red-800" },
-  ];
+/* ════════════════════════════════════════════════════
+   СЛАЙД 1 — О РОССИ В ЦЕЛОМ
+════════════════════════════════════════════════════ */
+function Slide1({ accent }: { accent: string }) {
   return (
-    <div className="slide-inner flex flex-col h-full px-6 pt-6 pb-4 overflow-auto">
-      <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-4 drop-shadow">
-        🗺️ География и местоположение
-      </h2>
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="Наша Родина — Россия" accent={accent} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+        <div className="flex flex-col gap-3">
+          <TextBlock title="Официальные названия" accent={accent}>
+            <p>Государство официально именуется <strong style={{ color: "#f5f0e8" }}>«Россия»</strong> или <strong style={{ color: "#f5f0e8" }}>«Российская Федерация»</strong>. Оба названия закреплены в Конституции и равнозначны — используются как в официальных документах, так и в разговорной речи.</p>
+          </TextBlock>
+          <TextBlock title="Территория" accent={accent}>
+            <p>Россия — <strong style={{ color: "#f5f0e8" }}>самое большое по территории государство в мире</strong>. Её площадь составляет более <strong style={{ color: "#f5f0e8" }}>17 миллионов км²</strong>.</p>
+            <p className="mt-2">Для сравнения: сумма площадей Канады (2-е место в мире) и Австралии (6-е место) лишь немного превышает площадь России.</p>
+          </TextBlock>
+          <TextBlock title="Возраст государства" accent={accent}>
+            <p>В 2025 году России исполнилось <strong style={{ color: "#f5f0e8" }}>1163 года</strong> — одно из древнейших государств мира (12-е место по возрасту).</p>
+            <p className="mt-2">Для сравнения: США существуют лишь <strong style={{ color: "#f5f0e8" }}>249 лет</strong>.</p>
+          </TextBlock>
+        </div>
+        <div className="flex flex-col gap-3">
+          <TextBlock title="Народы России" accent={accent}>
+            <p>В России проживают представители <strong style={{ color: "#f5f0e8" }}>более 190 народов</strong>. Семь из них имеют численность свыше одного миллиона человек:</p>
+            <ul className="mt-2 space-y-1">
+              {["Русские", "Татары", "Украинцы", "Башкиры", "Чуваши", "Чеченцы", "Армяне"].map((n, i) => (
+                <li key={n} className="flex items-center gap-2">
+                  <span className="text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" style={{ background: `${accent}44`, color: accent }}>{i + 1}</span>
+                  <span>{n}</span>
+                </li>
+              ))}
+            </ul>
+          </TextBlock>
+          <TextBlock title="Устройство государства" accent={accent}>
+            <p>Россия состоит из <strong style={{ color: "#f5f0e8" }}>89 субъектов Федерации</strong> (регионов). Каждый регион имеет свои особенности: историю, природу, население.</p>
+            <p className="mt-2">Второе официальное название — <strong style={{ color: "#f5f0e8" }}>«Российская Федерация»</strong> — подчёркивает федеративный характер государства.</p>
+          </TextBlock>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════
+   СЛАЙД 2 — ГЕОГРАФИЯ
+════════════════════════════════════════════════════ */
+function Slide2({ accent }: { accent: string }) {
+  return (
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="География и местоположение" accent={accent} />
       <div className="flex flex-col md:flex-row gap-4 flex-1 min-h-0">
-        <div className="flex-1 bg-white/15 backdrop-blur-sm rounded-2xl overflow-hidden">
+        <div className="flex-1 rounded-lg overflow-hidden" style={{ border: `1px solid ${accent}44`, minHeight: 180 }}>
           <img src={MAP_IMG} alt="Карта Саратовской области" className="w-full h-full object-cover" />
         </div>
-        <div className="flex flex-col gap-3 md:w-72">
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-            <div className="text-white font-black text-4xl">101 240</div>
-            <div className="text-white/80 text-sm font-semibold">км² — площадь области</div>
-            <div className="text-yellow-300 text-xs mt-1">32-е место среди регионов РФ</div>
+        <div className="flex flex-col gap-3 md:w-80">
+          <TextBlock title="Положение на карте России" accent={accent}>
+            <p>Саратовская область расположена на <strong style={{ color: "#f5f0e8" }}>юге европейской части России</strong>, в Поволжском экономическом районе. Занимает <strong style={{ color: "#f5f0e8" }}>32-е место</strong> по площади среди 89 субъектов Российской Федерации.</p>
+          </TextBlock>
+          <div className="rounded-lg p-4" style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${accent}33` }}>
+            <div className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Размеры области</div>
+            <FactRow label="Площадь" value="101 240 км²" accent={accent} />
+            <FactRow label="Протяжённость (запад — восток)" value="575 км" accent={accent} />
+            <FactRow label="Протяжённость (север — юг)" value="330 км" accent={accent} />
+            <FactRow label="Граница с Казахстаном" value="520 км" accent={accent} />
           </div>
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-            <div className="text-white font-black text-2xl">575 км ↔</div>
-            <div className="text-white/80 text-sm">с запада на восток</div>
-            <div className="text-white font-black text-2xl mt-1">330 км ↕</div>
-            <div className="text-white/80 text-sm">с севера на юг</div>
-          </div>
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-3">
-            <div className="text-white font-bold text-sm mb-2">Граничит с:</div>
-            <div className="flex flex-wrap gap-1">
-              {neighbors.map((n) => (
-                <span key={n.name} className={`${n.color} text-xs font-bold px-2 py-1 rounded-full`}>
-                  {n.dir} {n.name}
-                </span>
+          <TextBlock title="Соседние регионы" accent={accent}>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {["Пензенская обл.", "Ульяновская обл.", "Самарская обл.", "Воронежская обл.", "Волгоградская обл.", "Республика Казахстан"].map(r => (
+                <span key={r} className="text-xs px-2 py-1 rounded" style={{ background: `${accent}22`, color: accent, border: `1px solid ${accent}44` }}>{r}</span>
               ))}
             </div>
-          </div>
-          <div className="bg-yellow-400/30 backdrop-blur-sm rounded-2xl p-3 border-2 border-yellow-300/50">
-            <div className="text-yellow-200 text-xs font-bold">🇰🇿 Граница с Казахстаном</div>
-            <div className="text-white font-black text-2xl">520 км</div>
-          </div>
+          </TextBlock>
         </div>
       </div>
     </div>
   );
 }
 
-function Slide2() {
-  const nations = [
-    { name: "Русские", place: "🥇 1-е место", emoji: "🫅", color: "bg-blue-500" },
-    { name: "Казахи", place: "🥈 2-е место", emoji: "🤴", color: "bg-yellow-500" },
-    { name: "Татары", place: "🥉 3-е место", emoji: "👳", color: "bg-green-500" },
-  ];
+/* ════════════════════════════════════════════════════
+   СЛАЙД 3 — НАСЕЛЕНИЕ
+════════════════════════════════════════════════════ */
+function Slide3({ accent }: { accent: string }) {
   return (
-    <div className="slide-inner flex flex-col h-full px-6 pt-6 pb-4 overflow-auto">
-      <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-4 drop-shadow">
-        👥 Население и национальности
-      </h2>
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="Население и национальный состав" accent={accent} />
       <div className="flex flex-col md:flex-row gap-4 flex-1 min-h-0">
-        <div className="flex-1 bg-white/15 backdrop-blur-sm rounded-2xl overflow-hidden">
+        <div className="flex-1 rounded-lg overflow-hidden" style={{ border: `1px solid ${accent}44`, minHeight: 160 }}>
           <img src={PEOPLE_IMG} alt="Народы области" className="w-full h-full object-cover" />
         </div>
-        <div className="flex flex-col gap-3 md:w-72">
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center">
-            <div className="text-white font-black text-5xl">2 385 430</div>
-            <div className="text-white/80 text-sm font-semibold mt-1">человек проживает в области</div>
-            <div className="text-yellow-300 text-xs mt-1">по итогам 2024 года</div>
+        <div className="flex flex-col gap-3 md:w-80">
+          <div className="rounded-lg p-4 text-center" style={{ background: `${accent}22`, border: `1px solid ${accent}55` }}>
+            <div className="text-3xl font-bold" style={{ color: "#f5f0e8", fontFamily: "Georgia, serif" }}>2 385 430</div>
+            <div className="text-sm mt-1" style={{ color: accent }}>человек — население области</div>
+            <div className="text-xs mt-1" style={{ color: "#8a8070" }}>по итогам 2024 года</div>
           </div>
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-            <div className="text-white font-bold text-sm mb-3">Основные народы:</div>
-            <div className="flex flex-col gap-2">
-              {nations.map((n) => (
-                <div key={n.name} className="flex items-center gap-3 bg-white/10 rounded-xl p-2">
-                  <div className={`w-10 h-10 ${n.color} rounded-full flex items-center justify-center text-xl`}>{n.emoji}</div>
+          <TextBlock title="Национальный состав" accent={accent}>
+            <p>Как и вся Россия, Саратовская область — многонациональный регион. Крупнейшие народы по численности:</p>
+            <div className="mt-3 space-y-2">
+              {[
+                { n: "Русские", pos: "1-е место", note: "основное население" },
+                { n: "Казахи", pos: "2-е место", note: "близость к Казахстану" },
+                { n: "Татары", pos: "3-е место", note: "исторически сложившаяся община" },
+              ].map((item) => (
+                <div key={item.n} className="flex items-start gap-3">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded mt-0.5" style={{ background: `${accent}33`, color: accent }}>{item.pos}</span>
                   <div>
-                    <div className="text-white font-bold text-base">{n.name}</div>
-                    <div className="text-white/70 text-xs">{n.place}</div>
+                    <div className="text-sm font-bold" style={{ color: "#f5f0e8" }}>{item.n}</div>
+                    <div className="text-xs" style={{ color: "#8a8070" }}>{item.note}</div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-3">
-            <div className="text-white/80 text-xs leading-relaxed">
-              🌍 В области живут представители <span className="text-yellow-300 font-bold">более 100 народов</span> — так же, как и во всей России
-            </div>
-          </div>
+          </TextBlock>
+          <TextBlock accent={accent}>
+            <p>Всего в области проживают представители <strong style={{ color: "#f5f0e8" }}>более 100 народов и народностей</strong> — отражение многонационального характера всей Российской Федерации.</p>
+          </TextBlock>
         </div>
       </div>
     </div>
   );
 }
 
-function Slide3() {
-  const facts = [
-    { icon: "☀️", title: "Лето", text: "Жаркое, сухое. Температура до +38°C" },
-    { icon: "❄️", title: "Зима", text: "Холодная. Морозы ниже −20°C" },
-    { icon: "🌿", title: "Климат", text: "Континентальный — резкие перепады" },
-    { icon: "🏞️", title: "Рельеф", text: "Правобережье — холмы, Левобережье — степь" },
-    { icon: "🌊", title: "Волга", text: "Главная река. Делит область на 2 части" },
-    { icon: "🌻", title: "Природа", text: "Степи, леса, луга и поймы рек" },
-  ];
+/* ════════════════════════════════════════════════════
+   СЛАЙД 4 — КЛИМАТ И ПРИРОДА
+════════════════════════════════════════════════════ */
+function Slide4({ accent }: { accent: string }) {
   return (
-    <div className="slide-inner flex flex-col h-full px-6 pt-6 pb-4 overflow-auto">
-      <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-4 drop-shadow">
-        🌿 Природно-климатические особенности
-      </h2>
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="Природно-климатические особенности" accent={accent} />
       <div className="flex flex-col md:flex-row gap-4 flex-1 min-h-0">
-        <div className="flex-1 bg-white/15 backdrop-blur-sm rounded-2xl overflow-hidden">
-          <img src={NATURE_IMG} alt="Природа области" className="w-full h-full object-cover" />
+        <div className="flex-1 rounded-lg overflow-hidden" style={{ border: `1px solid ${accent}44`, minHeight: 160 }}>
+          <img src={NATURE_IMG} alt="Природа Саратовской области" className="w-full h-full object-cover" />
         </div>
-        <div className="grid grid-cols-2 gap-2 md:w-72 content-start">
-          {facts.map((f) => (
-            <div key={f.title} className="bg-white/20 backdrop-blur-sm rounded-2xl p-3 flex flex-col gap-1">
-              <div className="text-3xl">{f.icon}</div>
-              <div className="text-white font-black text-base">{f.title}</div>
-              <div className="text-white/80 text-xs leading-snug">{f.text}</div>
-            </div>
-          ))}
+        <div className="flex flex-col gap-3 md:w-80 overflow-auto">
+          <TextBlock title="Тип климата" accent={accent}>
+            <p>Климат Саратовской области — <strong style={{ color: "#f5f0e8" }}>резко континентальный</strong>. Это означает значительные перепады температур между сезонами: жаркое сухое лето и холодная зима.</p>
+          </TextBlock>
+          <div className="rounded-lg p-4" style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${accent}33` }}>
+            <div className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Характеристики климата</div>
+            <FactRow label="Лето" value="Жаркое, до +38°C и выше" accent={accent} />
+            <FactRow label="Зима" value="Холодная, ниже −20°C" accent={accent} />
+            <FactRow label="Осадки" value="Недостаточное увлажнение" accent={accent} />
+            <FactRow label="Ветры" value="Суховеи в летний период" accent={accent} />
+          </div>
+          <TextBlock title="Природные зоны и рельеф" accent={accent}>
+            <p><strong style={{ color: "#f5f0e8" }}>Правобережье</strong> (западная часть): холмистая местность, лесостепи и дубравы, Приволжская возвышенность.</p>
+            <p className="mt-2"><strong style={{ color: "#f5f0e8" }}>Левобережье</strong> (восточная часть): равнины и степи, переходящие в полупустыни у границы с Казахстаном.</p>
+            <p className="mt-2">Главная река — <strong style={{ color: "#f5f0e8" }}>Волга</strong> — делит область на две части и является важнейшей водной артерией региона.</p>
+          </TextBlock>
         </div>
       </div>
     </div>
   );
 }
 
-function Slide4() {
+/* ════════════════════════════════════════════════════
+   СЛАЙД 5 — ИСТОРИЯ
+════════════════════════════════════════════════════ */
+function Slide5({ accent }: { accent: string }) {
   const events = [
-    { year: "Древность", text: "Территорию населяли скифы, сарматы, половцы и другие народы", emoji: "⚔️" },
-    { year: "XIII–XV вв.", text: "Земли входили в состав Золотой Орды", emoji: "🏕️" },
-    { year: "1590", text: "Основание города Саратова как пограничной крепости", emoji: "🏰" },
-    { year: "1780", text: "Екатерина Великая учредила Саратовское наместничество", emoji: "👑" },
-    { year: "1936", text: "Конституция СССР закрепила Саратовскую область", emoji: "📜" },
-    { year: "2026", text: "90-летний юбилей Саратовской области!", emoji: "🎉" },
+    { period: "Древность — XV в.", text: "Территорию заселяли скифы, сарматы, затем половцы. В XIII–XV веках земли входили в состав Золотой Орды — могущественного государства монгольских завоевателей." },
+    { period: "1590 год", text: "Основание города Саратова как пограничной крепости для защиты южных рубежей Русского государства. Крепость была возведена на берегу реки Волги." },
+    { period: "1780 год", text: "По указу императрицы Екатерины Великой учреждено Саратовское наместничество — первая административная единица на этой территории. С этого момента отсчитывается 245-летняя история края как самостоятельной административной единицы." },
+    { period: "1936 год", text: "Конституция СССР официально закрепила статус Саратовской области в современных границах. Именно с этого года отсчитывается «возраст» области." },
+    { period: "2026 год", text: "Саратовская область отмечает 90-летний юбилей со дня получения официального статуса. Это важная дата в истории нашего края." },
   ];
   return (
-    <div className="slide-inner flex flex-col h-full px-6 pt-6 pb-4 overflow-auto">
-      <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-4 drop-shadow">
-        📜 История края и города Саратова
-      </h2>
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="История нашего края" accent={accent} />
       <div className="flex flex-col md:flex-row gap-4 flex-1 min-h-0">
-        <div className="flex-1 bg-white/15 backdrop-blur-sm rounded-2xl overflow-hidden">
+        <div className="flex-1 rounded-lg overflow-hidden" style={{ border: `1px solid ${accent}44`, minHeight: 160 }}>
           <img src={CITY_IMG} alt="Саратов" className="w-full h-full object-cover" />
         </div>
-        <div className="flex flex-col gap-2 md:w-80 overflow-auto">
+        <div className="flex flex-col gap-2 md:w-96 overflow-auto">
           {events.map((e, i) => (
-            <div key={i} className="flex gap-3 bg-white/15 backdrop-blur-sm rounded-2xl p-3 items-start">
-              <div className="text-3xl mt-0.5">{e.emoji}</div>
-              <div>
-                <div className="text-yellow-300 font-black text-base">{e.year}</div>
-                <div className="text-white text-sm leading-snug">{e.text}</div>
+            <div key={i} className="flex gap-3 rounded-lg p-3" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${accent}22` }}>
+              <div className="flex-shrink-0">
+                <div className="text-xs font-bold px-2 py-1 rounded text-center min-w-16" style={{ background: `${accent}33`, color: accent }}>{e.period}</div>
               </div>
+              <p className="text-sm leading-relaxed" style={{ color: "#d8d0c0" }}>{e.text}</p>
             </div>
           ))}
+          <div className="rounded-lg p-3 mt-1" style={{ background: `${accent}15`, border: `1px solid ${accent}44` }}>
+            <p className="text-xs" style={{ color: accent }}>
+              📌 <strong>Малая родина</strong> — населённый пункт, где человек появился на свет. Это может быть хутор, деревня, село, районный центр, небольшой город или сам Саратов.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function Slide5() {
+/* ════════════════════════════════════════════════════
+   СЛАЙД 6 — АДМИНИСТРАТИВНОЕ ДЕЛЕНИЕ
+════════════════════════════════════════════════════ */
+function Slide6({ accent }: { accent: string }) {
   return (
-    <div className="slide-inner flex flex-col h-full px-6 pt-6 pb-4 overflow-auto">
-      <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-4 drop-shadow">
-        🗂️ Административное деление
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1">
-        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center justify-center text-center">
-          <div className="text-6xl font-black text-white mb-2">38</div>
-          <div className="text-white/80 text-lg font-bold">районов</div>
-          <div className="text-yellow-300 text-sm mt-2">во всей области</div>
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="Административное деление области" accent={accent} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 content-start">
+        <div className="md:col-span-3">
+          <TextBlock title="Структура области" accent={accent}>
+            <p>Саратовская область разделена на <strong style={{ color: "#f5f0e8" }}>38 административных районов</strong>. Естественной границей между двумя частями области служит река Волга, которая делит территорию на Правобережье и Левобережье.</p>
+          </TextBlock>
         </div>
-        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center justify-center text-center">
-          <div className="text-5xl mb-2">🏞️</div>
-          <div className="text-white font-black text-3xl">20</div>
-          <div className="text-white/80 font-bold">Правобережье</div>
-          <div className="text-white/60 text-sm mt-1">правый берег Волги</div>
-          <div className="mt-3 text-xs text-white/70 leading-relaxed">Холмистый рельеф, леса, исторические города</div>
+        <div className="rounded-lg p-5" style={{ background: `${accent}15`, border: `1px solid ${accent}55` }}>
+          <div className="text-4xl font-bold text-center mb-1" style={{ color: "#f5f0e8", fontFamily: "Georgia, serif" }}>20</div>
+          <div className="text-center text-sm font-bold mb-3" style={{ color: accent }}>Правобережье</div>
+          <p className="text-xs text-center leading-relaxed" style={{ color: "#b0a898" }}>Районы на правом (западном) берегу Волги. Холмистый рельеф, лесостепи, исторические города и сёла.</p>
         </div>
-        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 flex flex-col items-center justify-center text-center">
-          <div className="text-5xl mb-2">🌾</div>
-          <div className="text-white font-black text-3xl">18</div>
-          <div className="text-white/80 font-bold">Левобережье</div>
-          <div className="text-white/60 text-sm mt-1">левый берег Волги</div>
-          <div className="mt-3 text-xs text-white/70 leading-relaxed">Степи и равнины, граница с Казахстаном</div>
+        <div className="rounded-lg p-5 flex flex-col items-center justify-center" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${accent}33` }}>
+          <div className="text-5xl font-bold mb-2" style={{ color: "#f5f0e8", fontFamily: "Georgia, serif" }}>38</div>
+          <div className="text-sm font-bold" style={{ color: accent }}>районов всего</div>
+          <div className="h-px w-16 my-3" style={{ background: accent }} />
+          <div className="text-xs text-center" style={{ color: "#8a8070" }}>в составе<br />Саратовской области</div>
         </div>
-        <div className="md:col-span-3 bg-white/15 backdrop-blur-sm rounded-2xl p-4">
-          <div className="flex flex-wrap justify-center gap-4 text-center">
-            <div>
-              <div className="text-white font-black text-2xl">1 848</div>
-              <div className="text-white/70 text-sm">населённых пунктов</div>
-            </div>
-            <div className="w-px bg-white/20 hidden md:block" />
-            <div>
-              <div className="text-white font-black text-2xl">🏙️ Саратов</div>
-              <div className="text-white/70 text-sm">областной центр</div>
-            </div>
-            <div className="w-px bg-white/20 hidden md:block" />
-            <div>
-              <div className="text-white font-black text-2xl">🌊 Волга</div>
-              <div className="text-white/70 text-sm">делит область на 2 части</div>
+        <div className="rounded-lg p-5" style={{ background: `${accent}15`, border: `1px solid ${accent}55` }}>
+          <div className="text-4xl font-bold text-center mb-1" style={{ color: "#f5f0e8", fontFamily: "Georgia, serif" }}>18</div>
+          <div className="text-center text-sm font-bold mb-3" style={{ color: accent }}>Левобережье</div>
+          <p className="text-xs text-center leading-relaxed" style={{ color: "#b0a898" }}>Районы на левом (восточном) берегу Волги. Степи и полупустыни, граница с Республикой Казахстан.</p>
+        </div>
+        <div className="md:col-span-3">
+          <div className="rounded-lg p-4" style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${accent}33` }}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <FactRow label="Населённых пунктов" value="1 848" accent={accent} />
+              <FactRow label="Областной центр" value="г. Саратов" accent={accent} />
+              <FactRow label="Год основания Саратова" value="1590 г." accent={accent} />
+              <FactRow label="Площадь области" value="101 240 км²" accent={accent} />
             </div>
           </div>
         </div>
@@ -278,145 +337,150 @@ function Slide5() {
   );
 }
 
-function Slide6() {
+/* ════════════════════════════════════════════════════
+   СЛАЙД 7 — ИТОГОВЫЕ ФАКТЫ
+════════════════════════════════════════════════════ */
+function Slide7({ accent }: { accent: string }) {
   const facts = [
-    { emoji: "📐", value: "101 240 км²", label: "площадь области", sub: "32-е место в России" },
-    { emoji: "👥", value: "2 385 430", label: "жителей области", sub: "по данным 2024 г." },
-    { emoji: "🏘️", value: "1 848", label: "населённых пунктов", sub: "сёла, деревни, города" },
-    { emoji: "🗂️", value: "38 районов", label: "административных", sub: "20 правых + 18 левых" },
-    { emoji: "🏙️", value: "1590 год", label: "основан Саратов", sub: "436 лет истории" },
-    { emoji: "🎂", value: "90 лет", label: "области в 2026 году", sub: "статус с 1936 года" },
-    { emoji: "🇰🇿", value: "520 км", label: "граница с Казахстаном", sub: "самая длинная" },
-    { emoji: "📏", value: "575 км", label: "с запада на восток", sub: "протяжённость" },
+    { label: "Площадь области", value: "101 240 км²", note: "32-е место в России" },
+    { label: "Население", value: "2 385 430 чел.", note: "данные 2024 года" },
+    { label: "Населённых пунктов", value: "1 848", note: "сёла, деревни, города" },
+    { label: "Административных районов", value: "38", note: "20 правых + 18 левых" },
+    { label: "Год основания Саратова", value: "1590 год", note: "436 лет истории" },
+    { label: "Юбилей области", value: "90 лет в 2026 г.", note: "статус с 1936 года" },
+    { label: "Протяжённость з↔в", value: "575 км", note: "с запада на восток" },
+    { label: "Протяжённость с↕ю", value: "330 км", note: "с севера на юг" },
+    { label: "Граница с Казахстаном", value: "520 км", note: "самая длинная граница" },
+    { label: "Место в России по площади", value: "32-е место", note: "из 89 субъектов" },
+    { label: "Тип климата", value: "Континентальный", note: "жаркое лето, холодная зима" },
+    { label: "Наместничество учреждено", value: "1780 год", note: "Екатерина Великая" },
   ];
   return (
-    <div className="slide-inner flex flex-col h-full px-6 pt-6 pb-4 overflow-auto">
-      <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-2 drop-shadow">
-        ⭐ Ключевые факты
-      </h2>
-      <p className="text-white/70 text-center text-sm mb-4">Всё самое важное о Саратовской области</p>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 flex-1 content-start">
-        {facts.map((f, i) => (
-          <div
-            key={i}
-            className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 flex flex-col items-center text-center hover:bg-white/30 transition-all duration-200 hover:scale-105"
-          >
-            <div className="text-4xl mb-2">{f.emoji}</div>
-            <div className="text-white font-black text-lg leading-tight">{f.value}</div>
-            <div className="text-white/80 text-xs mt-1 font-semibold">{f.label}</div>
-            <div className="text-white/50 text-xs mt-0.5">{f.sub}</div>
+    <div className="flex flex-col h-full px-6 pt-5 pb-4 overflow-auto">
+      <SlideTitle text="Ключевые факты о Саратовской области" accent={accent} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 content-start">
+        {facts.map((f) => (
+          <div key={f.label} className="flex justify-between items-start gap-3 rounded-lg px-4 py-3" style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${accent}22` }}>
+            <div>
+              <div className="text-sm" style={{ color: "#b0a898" }}>{f.label}</div>
+              <div className="text-xs mt-0.5" style={{ color: "#5a5248" }}>{f.note}</div>
+            </div>
+            <div className="text-sm font-bold text-right flex-shrink-0" style={{ color: "#f5f0e8" }}>{f.value}</div>
           </div>
         ))}
       </div>
-      <div className="mt-3 bg-white/10 rounded-2xl p-3 text-center">
-        <span className="text-white/60 text-sm">🎓 Саратовская область — наша малая Родина!</span>
+      <div className="mt-3 rounded-lg p-3 text-center" style={{ background: `${accent}15`, border: `1px solid ${accent}33` }}>
+        <span className="text-sm" style={{ color: accent }}>
+          Саратовская область — наша малая Родина, часть великой России 🇷🇺
+        </span>
       </div>
     </div>
   );
 }
 
-const slideComponents = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6];
+/* ════════════════════════════════════════════════════
+   ГЛАВНЫЙ КОМПОНЕНТ
+════════════════════════════════════════════════════ */
+const slideComponents = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7];
 
 export default function Index() {
   const [current, setCurrent] = useState(0);
-  const [animDir, setAnimDir] = useState<"left" | "right" | null>(null);
   const [visible, setVisible] = useState(true);
+  const [dir, setDir] = useState<"l" | "r">("r");
 
   const goTo = (next: number) => {
     if (next < 0 || next >= slides.length || next === current) return;
-    const dir = next > current ? "left" : "right";
-    setAnimDir(dir);
+    setDir(next > current ? "l" : "r");
     setVisible(false);
     setTimeout(() => {
       setCurrent(next);
       setVisible(true);
-      setAnimDir(null);
-    }, 220);
+    }, 200);
   };
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
+    const h = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") goTo(current + 1);
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") goTo(current - 1);
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
   }, [current]);
 
   const SlideComp = slideComponents[current];
+  const { bg, accent } = SLIDE_BG[current];
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-3 md:p-6"
-      style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)", fontFamily: "'Nunito', sans-serif" }}
+      className="min-h-screen flex flex-col items-center justify-center p-3 md:p-5"
+      style={{ background: "#0d0d14", fontFamily: "'Nunito', 'Georgia', sans-serif" }}
     >
       <style>{`
-        .slide-wrapper {
-          transition: opacity 0.22s ease, transform 0.22s ease;
-        }
-        .slide-hidden-left { opacity: 0; transform: translateX(-40px); }
-        .slide-hidden-right { opacity: 0; transform: translateX(40px); }
-        .slide-visible { opacity: 1; transform: translateX(0); }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap');
+        .slide-anim { transition: opacity 0.2s ease, transform 0.2s ease; }
+        .slide-in { opacity: 1; transform: translateX(0); }
+        .slide-out-l { opacity: 0; transform: translateX(-32px); }
+        .slide-out-r { opacity: 0; transform: translateX(32px); }
       `}</style>
 
-      {/* Навигация-точки сверху */}
-      <div className="flex items-center gap-1.5 mb-4">
+      {/* Навигация-вкладки */}
+      <div className="flex items-center gap-1 mb-3 flex-wrap justify-center max-w-4xl">
         {slides.map((s, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
-            title={s.label}
-            className={`transition-all duration-300 rounded-full font-bold text-xs ${
+            className="text-xs px-3 py-1.5 rounded transition-all duration-200 font-semibold"
+            style={
               i === current
-                ? "bg-white text-gray-800 px-4 py-1.5 shadow-lg"
-                : "bg-white/20 text-white/60 px-2 py-1.5 hover:bg-white/40"
-            }`}
+                ? { background: accent, color: "#1a1a2a" }
+                : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.1)" }
+            }
           >
-            {i === current ? s.label : i + 1}
+            {i + 1}. {s.label}
           </button>
         ))}
       </div>
 
       {/* Слайд */}
       <div
-        className={`slide-wrapper w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden bg-gradient-to-br ${SLIDE_COLORS[current]} ${
-          !visible
-            ? animDir === "left"
-              ? "slide-hidden-left"
-              : "slide-hidden-right"
-            : "slide-visible"
-        }`}
-        style={{ minHeight: "520px", height: "calc(100vh - 180px)", maxHeight: "680px" }}
+        className={`slide-anim w-full max-w-5xl rounded-xl overflow-hidden shadow-2xl ${visible ? "slide-in" : dir === "l" ? "slide-out-l" : "slide-out-r"}`}
+        style={{
+          background: bg,
+          border: `1px solid ${accent}33`,
+          minHeight: 500,
+          height: "calc(100vh - 160px)",
+          maxHeight: 680,
+          boxShadow: `0 0 60px ${accent}15, 0 24px 48px rgba(0,0,0,0.6)`,
+        }}
       >
-        <SlideComp />
+        <SlideComp accent={accent} />
       </div>
 
-      {/* Управление */}
-      <div className="flex items-center gap-4 mt-4">
+      {/* Нижняя навигация */}
+      <div className="flex items-center gap-4 mt-3">
         <button
           onClick={() => goTo(current - 1)}
           disabled={current === 0}
-          className="flex items-center gap-2 bg-white/15 hover:bg-white/30 disabled:opacity-30 text-white font-bold px-5 py-2.5 rounded-2xl transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+          className="flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-lg transition-all duration-200"
+          style={{ background: "rgba(255,255,255,0.08)", color: current === 0 ? "#3a3830" : "#c0b8a8", border: "1px solid rgba(255,255,255,0.1)" }}
         >
-          <Icon name="ChevronLeft" size={18} />
+          <Icon name="ChevronLeft" size={16} />
           Назад
         </button>
-
-        <span className="text-white/50 font-semibold text-sm">
+        <span className="text-xs" style={{ color: "#4a4840" }}>
           {current + 1} / {slides.length}
         </span>
-
         <button
           onClick={() => goTo(current + 1)}
           disabled={current === slides.length - 1}
-          className="flex items-center gap-2 bg-white/15 hover:bg-white/30 disabled:opacity-30 text-white font-bold px-5 py-2.5 rounded-2xl transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+          className="flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-lg transition-all duration-200"
+          style={{ background: current === slides.length - 1 ? "rgba(255,255,255,0.04)" : `${accent}33`, color: current === slides.length - 1 ? "#3a3830" : accent, border: `1px solid ${accent}44` }}
         >
           Вперёд
-          <Icon name="ChevronRight" size={18} />
+          <Icon name="ChevronRight" size={16} />
         </button>
       </div>
-
-      <div className="mt-2 text-white/30 text-xs">Используй стрелки ← → на клавиатуре</div>
+      <div className="mt-1 text-xs" style={{ color: "#2a2820" }}>← → клавиши клавиатуры</div>
     </div>
   );
 }
